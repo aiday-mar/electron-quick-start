@@ -2,13 +2,14 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('node:path')
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
     }
   })
 
@@ -16,7 +17,18 @@ function createWindow () {
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
+
+  // I added
+  console.log('before set timeout');
+  setTimeout(() => {
+    let anotherWindow = new BrowserWindow({
+      width: 800,
+      height: 600
+    });
+    anotherWindow.loadFile('index.html');
+  }, 5000)
+  // I added
 }
 
 // This method will be called when Electron has finished
